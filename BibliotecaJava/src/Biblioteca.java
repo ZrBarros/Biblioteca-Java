@@ -1,81 +1,60 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Random;
+import java.util.*;
 
 public class Biblioteca {
-    ArrayList<Livros> livros = new ArrayList<>();
-    ArrayList<Usuario> usuario = new ArrayList<>();
+    List<Livros> livros = new ArrayList<>();
+    Map<Integer, Integer> alugados = new HashMap<>();
 
-    public Biblioteca() {
-        while (true) {
-            System.out.println("Bem vindo ao sistema de consulta de livros da biblioteca!\n");
-            System.out.println("Faca login para poder navegar por nosso sistema!\n");
+    void adicionarLivro(Livros livro) {
+        livros.add(livro);
+    }
 
-            Scanner op = new Scanner(System.in);
-            System.out.println("Digite 1 para fazer login ou 2 para se cadastrar: ");
-            int opcao = op.nextInt();
-
-            if (opcao == 1) {
-                fazerLogin();
-                break;
-
-            } else if (opcao == 2) {
-                fazerCadastro();
-                break;
+    Livros buscarLivroPorId(int id) {
+        for (Livros livro : livros) {
+            if (livro.id == id) {
+                return livro;
             }
-
         }
-        System.out.println("" + usuario.get(0).getNome() + " voce esta logado no sistema!\n");
+        return null;
     }
 
-    private void fazerCadastro() {
-        System.out.println("Para se cadastrar, digite as seguintes informacoes: ");
-        Scanner nomeScan = new Scanner(System.in);
-        System.out.println("Digite seu nome: ");
-        String nome = nomeScan.nextLine();
-
-        Scanner emailScan = new Scanner(System.in);
-        System.out.println("Digite seu email: ");
-        String email = emailScan.nextLine();
-
-        Scanner senhaScan = new Scanner(System.in);
-        System.out.println("Digite sua senha: ");
-        String senha = senhaScan.nextLine();
-
-        Random random = new Random();
-        int min = 1000;
-        int max = 9999;
-        int ID = random.nextInt(max - min) + min;
-        usuario.add(new Usuario(nome, email, ID, 0, senha));
-
-        System.out.println("Cadastro realizado com sucesso! Seu ID de usuario eh: " + ID);
-    }
-
-    private void fazerLogin() {
-        Scanner username = new Scanner(System.in);
-        System.out.println("Digite seu nome de usuario: ");
-        String user = username.nextLine();
-
-        Scanner senhaScan = new Scanner(System.in);
-        System.out.println("Digite sua senha: ");
-        String senha = senhaScan.nextLine();
-
-        boolean usuarioEncontrado = false;
-
-        for (Usuario usuario : usuario) {
-            if (usuario.getNome().equals(user) && usuario.getSenha().equals(senha)) {
-                usuarioEncontrado = true;
-                break;
+    Livros buscarLivroPorTitulo(String titulo) {
+        for (Livros livro : livros) {
+            if (livro.titulo.equalsIgnoreCase(titulo)) {
+                return livro;
             }
-            if (usuarioEncontrado) {
-                System.out.println("Login realizado com sucesso!");
-                break;
+        }
+        return null;
+    }
+
+    boolean removerLivro(int id) {
+        Livros livro = buscarLivroPorId(id);
+        if (livro != null) {
+            livros.remove(livro);
+            return true;
+        }
+        return false;
+    }
+
+    boolean alugarLivro(int id, int dias) {
+        Livros livro = buscarLivroPorId(id);
+        if (livro != null) {
+            if (alugados.containsKey(id)) {
+                System.out.println("Livro já alugado!");
+                return false;
             } else {
-                System.out.println("Usuario ou senha incorretos!");
-                break;
+                alugados.put(id, 3 * dias);
+                System.out.println("Você alugou o livro " + livro.titulo + " por " + dias + " dias. O valor total é: "
+                        + (3 * dias) + " reais");
+                return true;
             }
         }
-
+        return false;
     }
 
+    void listarLivros() {
+        for (Livros livro : livros) {
+            System.out.println("ID: " + livro.id + ", Título: " + livro.titulo + ", Categoria: " + livro.categoria
+                    + ", Autor: " + livro.autor + ", Páginas: " + livro.paginas);
+        }
+    }
 }

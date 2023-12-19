@@ -1,41 +1,15 @@
 public class Livros {
-    String categoria, titulo, autor;
-    int ID, paginas;
+    String titulo;
+    int id;
+    String categoria;
+    String autor;
+    int paginas;
 
-    public Livros(String categoria, int ID, String titulo, String autor, int paginas) {
-        this.categoria = categoria;
-        this.ID = ID;
+    Livros(String titulo, int id, String categoria, String autor, int paginas) {
         this.titulo = titulo;
+        this.id = id;
+        this.categoria = categoria;
         this.autor = autor;
         this.paginas = paginas;
     }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public int getPaginas() {
-        return paginas;
-    }
-        
-    public String toString() {
-        return "Categoria: " + categoria +
-                "\nID: " + ID +
-                "\nTitulo: " + titulo +
-                "\nAutor: " + autor +
-                "\nPaginas: " + paginas;
-    }
-
 }
